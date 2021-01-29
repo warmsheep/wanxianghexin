@@ -5,22 +5,30 @@
 ## 技术栈
 
 * JDK 1.8
-* Spring Boot 2.1,.x
-* Spring Cloud GreenWich
+* Spring Boot 
+* Spring Cloud 
 * Spring Cloud Config
 * Spring Cloud Sleuth
 * Netflix Fegin
 * Netflix Ribbon
 * Hystrix
 * RabbitMQ
-* Redis
 * Eureka
-
+* Redis
 * SkyWalking
 * ELK
 * GitLab
 * Jenkins
 * PostgreSQL
+* MeterSphere
+* APISIX
+* Nginx
+* Etcd
+* Ceph
+* NFS
+* OpenStack
+* Ansible
+* Docker
 
-
+![](/assets/技术栈.png)
 
