@@ -69,3 +69,54 @@
 
 ![](/assets/限流效果.png)
 
+
+
+* ### 任务调度机制
+
+> 采用Spring线程池实现可管理的任务调度，根据系统配置可定制任务首次执行时间、执行频率，针对任务可配置参数、对应系统、描述以及执行方式：定时触发、依据上次成功后间隔触发。
+>
+> 对任务执行进度可视化，可控制任务暂停以及手动触发重新执行，存留任务的全部执行记录
+
+![](/assets/添加任务.png)
+
+* 可配置每个任务的执行线程
+
+```java
+    @Bean
+    public Executor taskRun() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(100);
+        executor.setMaxPoolSize(100);
+        executor.setQueueCapacity(100);
+        executor.setThreadNamePrefix("taskRun");
+        executor.initialize();
+
+        return executor;
+    }
+    @Bean
+    public Executor taskRunV2() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(200);
+        executor.setMaxPoolSize(200);
+        executor.setQueueCapacity(200);
+        executor.setThreadNamePrefix("taskRunV2");
+        executor.initialize();
+        return executor;
+    }
+```
+
+* 定时任务读取到任务配置信息后进行缓存，同时有另一个新的线程定时刷新缓存，确保任务参数变更能短时间内生效，同时确保任务执行无需频繁查库。
+* 批量任务的调度机制采用Java中非阻塞模型，使用Future.isDone\(\)来判断线程状态，不影响主线程的同时，保障子线程执行。
+
+* ### 队列机制
+
+> 系统中大量采用消息队列处理请求，其中包含批量请求、任务调度、日志记录、异步推送等，使用消息队列对系统压力进行削峰填谷，同时保障系统运行过程中消息的可靠性。
+>
+> 在设计中，我们设计了Sender和Receiver两个角色，分别作为两个微服务存在，他们将消息队列投递以及监听进行的标准化输出，可适配多种类型消息队列中间件，现采用RabbitMQ。业务系统将消息发送给Sender来进行投递，Receiver对队列进行监听，监听到投递的消息后转送给业务系统处理。
+
+![](/assets/消息队列调用机制.png)
+
+> 对于部分需要重发的消息以及需要延迟发送的消息，系统中会采用双队列进行投递和监听。将固定延迟的消息会投递给死信队列，等待时间过期重新取出发送。注：单个死信队列的延迟时间需要一致，队列中消息延迟不一致会导致不同消息消费时间会根据前一条消息的延迟顺延排队。
+
+![](/assets/延迟队列调用.png)
+
