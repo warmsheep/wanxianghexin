@@ -130,5 +130,12 @@
 
 > 传统数据库从性能上不满足大规模的分析计算需求能力，使用HADOOP、SPARK一类产品对于分析人员不友好。采用GreenPlum作为OLAP的数据分析引擎，是基于PostgreSQL的分布式OLAP数据库产品，能完美兼容PostgreSQL，支持SQL分析数据。通过多节点部署，多节点并行计算，处理PB级数据分析。
 
+* 数据库由Master Severs和Segment Severs通过Interconnect互联组成。
+* Master主机负责：建立与客户端的连接和管理；SQL的解析并形成执行计划；执行计划向Segment的分发收集Segment的执行结果；Master不存储业务数据，只存储数据字典。  
 
+* Segment主机负责：业务数据的存储和存取；用户查询SQL的执行。
+
+以下是GreenPlum的总体架构：
+
+![](/assets/GP架构.png)
 
