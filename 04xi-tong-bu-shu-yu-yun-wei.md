@@ -24,7 +24,7 @@
 >
 > 同时自持前置机状态可管理，历史状态可追溯。
 
-![](/assets/VPN网络监控.png)![](/assets/网络实时监控.png)![](/assets/VPN上线下记录.png)![](/assets/前置机管理.png)
+![](/assets/VPN网络监控.png)![](/assets/VPN网络管理2.png)![](/assets/VPN上线下记录.png)![](/assets/前置机管理.png)
 
 ### 混合云部署
 
